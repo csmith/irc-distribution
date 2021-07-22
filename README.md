@@ -2,7 +2,7 @@
 
 Plugin for [IRC-Bot](https://github.com/greboid/irc-bot)
 
-Receives notifications from a [Distribution](https://github.com/distrubtion/distribution) instance and outputs them to
+Receives notifications from a [Distribution](https://github.com/distribution/distribution) instance and outputs them to
 a channel.
 
 - go build github.com/csmith/irc-distribution/cmd/distribution

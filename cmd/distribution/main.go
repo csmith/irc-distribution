@@ -63,6 +63,10 @@ func webhookHandler(helper *plugins.PluginHelper) func(request *rpc.HttpRequest)
 }
 
 func handlePush(helper *plugins.PluginHelper, e event) error {
+	if e.Target.Tag == "" {
+		return nil
+	}
+
 	return helper.SendChannelMessage(
 		*channel,
 		fmt.Sprintf(

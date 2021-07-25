@@ -70,12 +70,11 @@ func handlePush(helper *plugins.PluginHelper, e event) error {
 	return helper.SendChannelMessage(
 		*channel,
 		fmt.Sprintf(
-			"[%s] Push to tag %s by %s: %s (%d bytes)",
+			"[%s] Push to tag %s by %s: %s",
 			e.Target.Repository,
 			e.Target.Tag,
 			e.Actor.Name,
 			e.Target.Digest,
-			e.Target.Size,
 		),
 	)
 }

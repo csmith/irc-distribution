@@ -25,7 +25,6 @@ type target struct {
 	Digest     string `json:"digest"`
 	Repository string `json:"repository"`
 	Tag        string `json:"tag"`
-	Size       int64  `json:"size"`
 }
 
 type actor struct {

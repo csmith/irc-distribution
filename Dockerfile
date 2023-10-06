@@ -1,4 +1,4 @@
-FROM golang:1.21.0 as builder
+FROM golang:1.21.2 as builder
 
 ENV USER=appuser
 ENV UID=10001

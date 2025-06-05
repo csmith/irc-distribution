@@ -7,9 +7,9 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/greboid/irc-bot/v4/plugins"
-	"github.com/greboid/irc-bot/v4/rpc"
-	"github.com/kouhin/envflag"
+	"github.com/csmith/envflag/v2"
+	"github.com/greboid/irc-bot/v5/plugins"
+	"github.com/greboid/irc-bot/v5/rpc"
 )
 
 var (
@@ -21,10 +21,7 @@ var (
 )
 
 func main() {
-	if err := envflag.Parse(); err != nil {
-		log.Fatalf("Unable to load config: %v", err)
-		return
-	}
+	envflag.Parse()
 
 	helper, err := plugins.NewHelper(fmt.Sprintf("%s:%d", *rpcHost, uint16(*rpcPort)), *rpcToken)
 	if err != nil {

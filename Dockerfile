@@ -1,28 +1,15 @@
-FROM golang:1.24.3 as builder
+FROM golang:1.24.3 AS build
 
-ENV USER=appuser
-ENV UID=10001
+WORKDIR /go/src/app
+COPY . .
 
-RUN adduser \
-    --disabled-password \
-    --gecos "" \
-    --home "/nonexistent" \
-    --shell "/sbin/nologin" \
-    --no-create-home \
-    --uid "${UID}" \
-    "${USER}"
+RUN --mount=type=cache,target=/go/pkg/mod \
+    set -eux; \
+    CGO_ENABLED=0 GO111MODULE=on go install ./cmd/distribution; \
+    go run github.com/google/go-licenses@latest save ./... --save_path=/notices;
 
-WORKDIR /app
-COPY . /app
-RUN CGO_ENABLED=0 GOOS=linux go build -a -ldflags '-extldflags "-static"' -trimpath -ldflags=-buildid= -o main ./cmd/distribution
+FROM ghcr.io/greboid/dockerbase/nonroot:1.20250326.0
 
-FROM scratch
-
-COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
-COPY --from=builder /etc/passwd /etc/passwd
-COPY --from=builder /etc/group /etc/group
-COPY --from=builder /usr/share/zoneinfo /usr/share/zoneinfo
-
-COPY --from=builder /app/main /irc-distribution
-USER appuser:appuser
+COPY --from=build /go/bin/distribution /irc-distribution
+COPY --from=build /notices /notices
 CMD ["/irc-distribution"]
